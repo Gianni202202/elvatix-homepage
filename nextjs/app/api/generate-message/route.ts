@@ -40,53 +40,64 @@ export async function POST(req: NextRequest) {
       profileContext = `
 VERRIJKT LINKEDIN PROFIEL (via scraping):
 - Volledige naam: ${profile.fullName}
-- Huidige functie: ${profile.currentTitle || "onbekend"}
-- Bedrijf: ${profile.companyName || "onbekend"}
-- Headline: ${profile.headline || "niet beschikbaar"}
+- Headline (zelfbeschrijving op LinkedIn): ${profile.headline || "niet beschikbaar"}
 - Locatie: ${profile.location || "onbekend"}
-- Werkervaring: ${(profile.jobHistory || []).join(" → ") || "niet beschikbaar"}
-- Skills: ${(profile.skills || []).join(", ") || "niet beschikbaar"}`;
+
+BELANGRIJK — WERKERVARING TIJDLIJN (lees dit als een CV, van boven naar beneden):
+Items met [HUIDIG] zijn functies die de kandidaat NU bekleedt.
+Items met [VORIG] zijn functies uit het VERLEDEN — de kandidaat werkt hier NIET meer.
+${(profile.jobHistory || []).length > 0 ? (profile.jobHistory || []).map((j: string) => `  ${j}`).join("\n") : "  Geen werkervaring beschikbaar"}
+
+HUIDIGE SITUATIE (gebaseerd op bovenstaande tijdlijn):
+- Huidige functietitel: ${profile.currentTitle || "onbekend"}
+- Huidig bedrijf: ${profile.companyName || "onbekend"}
+
+Skills: ${(profile.skills || []).join(", ") || "niet beschikbaar"}`;
     }
 
     const candidateName = profile?.fullName || profile?.firstName || "de kandidaat";
+    const firstName = profile?.firstName || candidateName.split(" ")[0] || "de kandidaat";
 
     const toneInstruction = tone === "formal"
       ? "Schrijf in een formele, professionele toon."
       : "Schrijf in een informele, warme en persoonlijke toon.";
 
-    const prompt = `Je bent een expert recruitment copywriter voor Nederlandse recruiters. Genereer TWEE berichten:
+    const prompt = `Je bent een expert recruitment copywriter voor Nederlandse recruiters. Genereer TWEE berichten.
 
-1) Een gepersonaliseerd LinkedIn InMail bericht (max 150 woorden)
-2) Een kort connectieverzoek-bericht (MAXIMAAL 300 karakters inclusief spaties — dit is een harde limiet van LinkedIn)
-
-KANDIDAAT INFORMATIE:
-- Naam: ${candidateName}
+KANDIDAAT:
+- Naam: ${candidateName} (voornaam: ${firstName})
 - Functie waarvoor geworven wordt: ${jobTitle || "niet gespecificeerd"}
 ${profileContext}
 
-INSTRUCTIES VOOR BEIDE BERICHTEN:
+KRITIEKE REGELS OVER WERKERVARING:
+1. Functies gemarkeerd als [VORIG] zijn VERLEDEN TIJD. De kandidaat werkt daar NIET meer. Verwijs ernaar in de verleden tijd ("je ervaring bij X", "je tijd bij Y").
+2. Functies gemarkeerd als [HUIDIG] zijn ACTIEF. De kandidaat werkt daar NU. Gebruik tegenwoordige tijd ("je rol bij X", "wat je doet bij Y").
+3. Haal NOOIT vorige en huidige functies door elkaar. Als iemand vroeger bij Microsoft werkte en nu bij een startup zit, zeg dan NIET "wat je bij Microsoft doet" maar "je ervaring bij Microsoft".
+4. De headline (zelfbeschrijving) is hoe de kandidaat ZICHZELF omschrijft — gebruik dit als context voor hoe ze hun carrière zien.
+
+BERICHTEN:
+
+1) INMAIL (max 150 woorden):
 - ${toneInstruction}
-- Het bericht moet ECHT persoonlijk aanvoelen — gebruik specifieke details uit het profiel.
-- Als er werkervaring of headline beschikbaar is, verwijs daar concreet naar.
-- Gebruik de voornaam van de kandidaat als aanspreking.
-- GEEN generieke zinnen als "Ik zag je profiel" of "Ik was onder de indruk". Wees specifiek.
+- Spreek aan met voornaam "${firstName}".
+- Refereer concreet aan iets specifieks uit het profiel: hun HUIDIGE rol, een specifieke skill, of hun carrièrepad.
+- Noem de functie waarvoor je werft.
+- Geen generieke openingszinnen als "Ik zag je profiel" of "Ik was onder de indruk".
+- Eindig met een uitnodiging voor een kort gesprek of koffie.
 - Schrijf in het Nederlands.
 
-EXTRA VOOR INMAIL:
-- Noem de functie waarvoor je werft.
-- Gebruik een pakkende openingszin die opvalt in een drukke inbox.
-- Eindig met een uitnodiging voor een kort gesprek of (virtuele) koffie.
+2) CONNECTIEVERZOEK (MAXIMAAL 300 karakters inclusief spaties — LinkedIn limiet):
+- Heel kort en concreet.
+- Noem een specifiek detail uit het profiel.
+- Geef een reden om te connecten.
+- Geen formele afsluiting.
+- Schrijf in het Nederlands.
 
-EXTRA VOOR CONNECTIEVERZOEK:
-- Heel kort en puntig — max 300 karakters totaal.
-- Geen formele afsluiting nodig.
-- Geef een duidelijke reden om te connecten.
-
-ANTWOORD FORMAT (volg dit EXACT):
+ANTWOORD FORMAT (volg dit EXACT, geen extra tekst):
 ---INMAIL---
-[Het InMail bericht hier]
+[Het InMail bericht]
 ---CONNECTIE---
-[Het connectieverzoek hier, max 300 karakters]`;
+[Het connectieverzoek, max 300 karakters]`;
 
     const geminiKey = process.env.Gemini;
     if (!geminiKey) {

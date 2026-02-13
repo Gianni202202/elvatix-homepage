@@ -10,7 +10,6 @@ export async function POST(req: NextRequest) {
 
     const apiKey = process.env.Prospeo;
     if (!apiKey) {
-      // Fallback: extract name from URL
       const match = linkedinUrl.match(/linkedin\.com\/in\/([^/?]+)/);
       const name = match
         ? match[1].replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase()).replace(/\d+/g, "").trim()
@@ -32,7 +31,6 @@ export async function POST(req: NextRequest) {
     try { data = await res.json(); } catch { data = null; }
 
     if (!data || !res.ok || data.error || !data.person) {
-      // Fallback: extract name from URL
       const match = linkedinUrl.match(/linkedin\.com\/in\/([^/?]+)/);
       const name = match
         ? match[1].replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase()).replace(/\d+/g, "").trim()
@@ -47,11 +45,16 @@ export async function POST(req: NextRequest) {
     const person = data.person;
     const company = data.company;
 
+    // Build job history with current/past distinction and dates
     const jobHistory = (person.job_history || [])
-      .slice(0, 3)
-      .map((job: { title: string; company_name: string; duration_in_months?: number }) =>
-        `${job.title} bij ${job.company_name}${job.duration_in_months ? ` (${Math.round(job.duration_in_months / 12)} jaar)` : ""}`
-      );
+      .slice(0, 5)
+      .map((job: { title: string; company_name: string; duration_in_months?: number; is_current?: boolean; start_date?: string; end_date?: string }, idx: number) => {
+        const isCurrent = job.is_current || idx === 0;
+        const years = job.duration_in_months ? Math.round(job.duration_in_months / 12) : null;
+        const duration = years ? `${years} jaar` : "";
+        const period = isCurrent ? "HUIDIG" : "VORIG";
+        return `[${period}] ${job.title} bij ${job.company_name}${duration ? ` (${duration})` : ""}`;
+      });
 
     return NextResponse.json({
       success: true,
