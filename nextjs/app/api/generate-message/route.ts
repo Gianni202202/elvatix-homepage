@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Rate limiting
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 3;
+const RATE_LIMIT = 5;
 const RATE_WINDOW = 60 * 60 * 1000;
 
 function checkRateLimit(ip: string): boolean {
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || req.headers.get("x-real-ip") || "unknown";
     if (!checkRateLimit(ip)) {
       return NextResponse.json(
-        { error: "Je hebt het maximum aantal berichten bereikt (3 per uur). Probeer het later opnieuw." },
+        { error: "Je hebt het maximum aantal berichten bereikt (5 per uur). Probeer het later opnieuw." },
         { status: 429 }
       );
     }
@@ -35,7 +35,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Een geldig e-mailadres is vereist." }, { status: 400 });
     }
 
-    // Build profile context from already-scraped data
     let profileContext = "";
     if (profile && profile.fullName) {
       profileContext = `
@@ -55,25 +54,39 @@ VERRIJKT LINKEDIN PROFIEL (via scraping):
       ? "Schrijf in een formele, professionele toon."
       : "Schrijf in een informele, warme en persoonlijke toon.";
 
-    const prompt = `Je bent een expert recruitment copywriter voor Nederlandse recruiters. Genereer een gepersonaliseerd LinkedIn InMail bericht.
+    const prompt = `Je bent een expert recruitment copywriter voor Nederlandse recruiters. Genereer TWEE berichten:
+
+1) Een gepersonaliseerd LinkedIn InMail bericht (max 150 woorden)
+2) Een kort connectieverzoek-bericht (MAXIMAAL 300 karakters inclusief spaties — dit is een harde limiet van LinkedIn)
 
 KANDIDAAT INFORMATIE:
 - Naam: ${candidateName}
 - Functie waarvoor geworven wordt: ${jobTitle || "niet gespecificeerd"}
 ${profileContext}
 
-INSTRUCTIES:
+INSTRUCTIES VOOR BEIDE BERICHTEN:
 - ${toneInstruction}
 - Het bericht moet ECHT persoonlijk aanvoelen — gebruik specifieke details uit het profiel.
 - Als er werkervaring of headline beschikbaar is, verwijs daar concreet naar.
 - Gebruik de voornaam van de kandidaat als aanspreking.
-- Noem de functie waarvoor je werft.
-- Houd het bericht kort en krachtig (max 150 woorden).
-- Gebruik een pakkende openingszin die opvalt in een drukke inbox.
 - GEEN generieke zinnen als "Ik zag je profiel" of "Ik was onder de indruk". Wees specifiek.
-- Eindig met een uitnodiging voor een kort gesprek of (virtuele) koffie.
 - Schrijf in het Nederlands.
-- Geef ALLEEN het bericht terug, geen uitleg, geen aanhalingstekens, geen extra tekst.`;
+
+EXTRA VOOR INMAIL:
+- Noem de functie waarvoor je werft.
+- Gebruik een pakkende openingszin die opvalt in een drukke inbox.
+- Eindig met een uitnodiging voor een kort gesprek of (virtuele) koffie.
+
+EXTRA VOOR CONNECTIEVERZOEK:
+- Heel kort en puntig — max 300 karakters totaal.
+- Geen formele afsluiting nodig.
+- Geef een duidelijke reden om te connecten.
+
+ANTWOORD FORMAT (volg dit EXACT):
+---INMAIL---
+[Het InMail bericht hier]
+---CONNECTIE---
+[Het connectieverzoek hier, max 300 karakters]`;
 
     const geminiKey = process.env.Gemini;
     if (!geminiKey) {
@@ -81,18 +94,33 @@ INSTRUCTIES:
     }
 
     const genAI = new GoogleGenerativeAI(geminiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-3-pro-preview" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-05-20" });
     const result = await model.generateContent(prompt);
-    const message = result.response.text();
+    const rawText = result.response.text();
 
-    if (!message) {
+    if (!rawText) {
       return NextResponse.json({ error: "Generatie mislukt." }, { status: 500 });
     }
 
-    // Log lead
+    // Parse the two messages
+    let inmail = rawText.trim();
+    let connectionRequest = "";
+
+    if (rawText.includes("---INMAIL---") && rawText.includes("---CONNECTIE---")) {
+      const parts = rawText.split("---CONNECTIE---");
+      inmail = parts[0].replace("---INMAIL---", "").trim();
+      connectionRequest = parts[1]?.trim() || "";
+      if (connectionRequest.length > 300) {
+        connectionRequest = connectionRequest.substring(0, 297) + "...";
+      }
+    }
+
     console.log("[LEAD]", { email, jobTitle, name: candidateName, timestamp: new Date().toISOString() });
 
-    return NextResponse.json({ message: message.trim() });
+    return NextResponse.json({
+      message: inmail,
+      connectionRequest,
+    });
   } catch (error) {
     console.error("Error generating message:", error);
     return NextResponse.json({ error: "Er is een fout opgetreden. Probeer het opnieuw." }, { status: 500 });
