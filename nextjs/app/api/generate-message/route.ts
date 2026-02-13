@@ -61,42 +61,55 @@ Skills: ${(profile.skills || []).join(", ") || "niet beschikbaar"}`;
     const firstName = profile?.firstName || candidateName.split(" ")[0] || "de kandidaat";
 
     const toneInstruction = tone === "formal"
-      ? "Schrijf in een formele, professionele toon."
-      : "Schrijf in een informele, warme en persoonlijke toon.";
+      ? "Schrijf professioneel maar menselijk — zoals een senior professional die een gelijkwaardige aanspreekt."
+      : "Schrijf warm, vlot en persoonlijk — zoals een goed gesprek tussen twee professionals bij een kop koffie.";
 
-    const prompt = `Je bent een expert recruitment copywriter voor Nederlandse recruiters. Genereer TWEE berichten.
+    const prompt = `Je schrijft LinkedIn-berichten in vloeiend, natuurlijk Nederlands. Geen vertaaltaal, geen stijve zinnen. Schrijf zoals een Nederlander echt schrijft — vlot, direct, en met persoonlijkheid.
 
 KANDIDAAT:
 - Naam: ${candidateName} (voornaam: ${firstName})
-- Functie waarvoor geworven wordt: ${jobTitle || "niet gespecificeerd"}
+- De rol waar het om gaat: ${jobTitle || "niet gespecificeerd"}
 ${profileContext}
 
-KRITIEKE REGELS OVER WERKERVARING (volg deze STRIKT):
-1. Items met [HUIDIG] → de kandidaat doet dit NU. Gebruik tegenwoordige tijd. Voorbeeld: "je rol als X bij Y", "wat je nu doet bij Z".
-2. Items met [VORIG] → dit is VERLEDEN TIJD. De kandidaat werkt hier NIET meer. Gebruik verleden tijd. Voorbeeld: "je ervaring als X bij Y", "je tijd bij Z".
-3. Kijk naar de periode (bijv. "okt 2022 – heden" = nog actief, "jul 2020 – okt 2022" = afgelopen). "heden" = huidige baan. Een einddatum = vorige baan.
-4. Haal NOOIT functies door elkaar. Als iemand van 2020-2022 Chairman was en sinds 2022 CEO is, refereer dan aan de CEO-rol als huidig en de Chairman-rol als verleden.
-5. De headline is hoe de kandidaat zichzelf profileert — gebruik dit als context maar niet als feit over hun functie.
+REGELS OVER WERKERVARING (STRIKT):
+1. [HUIDIG] = NU actief → tegenwoordige tijd ("je rol bij X", "wat je doet bij Y").
+2. [VORIG] = VERLEDEN → verleden tijd ("je tijd bij X", "je ervaring bij Y").
+3. [ONBEKEND] = geen datuminfo → schrijf neutraal, zonder aan te nemen of het huidig of verleden is.
+4. "heden" in de periode = nog actief. Een einddatum = afgelopen. Haal dit NOOIT door elkaar.
+5. De headline is hoe de kandidaat zichzelf omschrijft — gebruik het als context, niet als functietitel.
+
+TOON & STIJL:
+- ${toneInstruction}
+- Het bericht gaat VOLLEDIG over de kandidaat: hun pad, hun skills, wat hen bijzonder maakt. Maak ze nieuwsgierig.
+- Noem NOOIT dat je recruiter bent, niet "als recruiter", niet "vanuit mijn rol", niets daarover. Je bent gewoon iemand met een interessant voorstel.
+- Noem de functie/rol waarvoor je schrijft ("${jobTitle || "niet gespecificeerd"}"), maar zonder te zeggen "ik werf" of "ik zoek kandidaten".
+- Schrijf alsof je oprecht geïnteresseerd bent in deze persoon. Geen verkooppraatjes.
+
+VERBODEN ZINNEN (gebruik deze NOOIT):
+- "Ik zag je profiel"
+- "Ik was onder de indruk"
+- "Als recruiter zoek ik"
+- "Wij zijn op zoek naar"
+- "Ik kwam je profiel tegen"
+- "Namens mijn klant"
+- Elke zin die begint met "Ik" als openingszin
 
 BERICHTEN:
 
 1) INMAIL (max 150 woorden):
-- ${toneInstruction}
-- Spreek aan met voornaam "${firstName}".
-- Verwijs specifiek naar hun HUIDIGE rol of een opvallend carrièrepad.
-- Noem de functie waarvoor je werft: "${jobTitle || "niet gespecificeerd"}".
-- Geen generieke zinnen als "Ik zag je profiel" of "Ik was onder de indruk".
-- Eindig met een uitnodiging voor een kort gesprek of koffie.
-- Schrijf in het Nederlands.
+- Spreek aan met "${firstName}".
+- Open met iets specifieks over hún carrière dat laat zien dat je je hebt verdiept — hun huidige rol, een opvallende stap, of een combinatie van skills.
+- Maak een natuurlijke brug naar de rol: "${jobTitle || "niet gespecificeerd"}". Leg uit waarom hun achtergrond daar perfect bij past.
+- Sluit af met een laagdrempelige uitnodiging — kort gesprek, koffie, even bellen. Geen druk.
+- Elke zin moet waarde toevoegen. Geen opvulzinnen.
 
 2) CONNECTIEVERZOEK (MAXIMAAL 300 karakters inclusief spaties — harde LinkedIn limiet):
-- Heel kort en concreet.
-- Noem een specifiek detail uit het profiel.
-- Geef een duidelijke reden om te connecten.
-- Geen formele afsluiting nodig.
-- Schrijf in het Nederlands.
+- Eén of twee zinnen, max.
+- Noem iets concreets uit hun profiel dat opvalt.
+- Geef een korte, eerlijke reden om te connecten.
+- Geen afsluiting, geen "Groet" of "Mvg".
 
-ANTWOORD FORMAT (volg dit EXACT, geen extra tekst eromheen):
+ANTWOORD FORMAT (volg EXACT, geen extra tekst):
 ---INMAIL---
 [Het InMail bericht]
 ---CONNECTIE---
