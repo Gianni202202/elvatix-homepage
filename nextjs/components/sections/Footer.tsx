@@ -37,8 +37,8 @@ const columns = [
 export default function Footer() {
   return (
     <footer style={{ padding: "64px 24px 32px", background: "#fff", borderTop: "1px solid #e5e7eb" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 32, marginBottom: 48 }}>
+      <div className="section-inner">
+        <div className="footer-grid">
           {columns.map((col, i) => (
             <div key={i}>
               <h4 style={{ fontSize: 12, fontWeight: 700, color: "#374151", letterSpacing: "0.1em", marginBottom: 16 }}>{col.title}</h4>
@@ -52,8 +52,7 @@ export default function Footer() {
             </div>
           ))}
         </div>
-
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #e5e7eb", paddingTop: 24 }}>
+        <div className="footer-bottom">
           <div>
             <h3 style={{ fontSize: 20, fontWeight: 800, color: "#111", marginBottom: 4 }}>Elvatix</h3>
             <p style={{ fontSize: 13, color: "#9ca3af" }}>© 2026 Elvatix. Alle rechten voorbehouden.</p>

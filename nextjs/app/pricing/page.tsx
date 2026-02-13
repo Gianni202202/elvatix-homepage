@@ -37,7 +37,7 @@ const tiers = [
 
 export default function PricingPage() {
   return (
-    <main style={{ paddingTop: 100 }}>
+    <main className="page-top">
       <section style={{ padding: "80px 24px", textAlign: "center" }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <p style={{ fontSize: 13, fontWeight: 600, color: "#8db600", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>

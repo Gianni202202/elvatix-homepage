@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 export default function LoginPage() {
   return (
-    <main style={{ paddingTop: 100, minHeight: "80vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <main className="page-top" style={{ minHeight: "80vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ maxWidth: 420, width: "100%", padding: "48px 40px", background: "#fff", borderRadius: 20, border: "1px solid #e5e7eb", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
         <div style={{ textAlign: "center", marginBottom: 32 }}>
           <h1 style={{ fontSize: 28, fontWeight: 800, color: "#111", marginBottom: 8 }}>Welkom terug</h1>

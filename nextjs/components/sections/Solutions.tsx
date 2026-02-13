@@ -11,18 +11,17 @@ const solutions = [
 
 export default function Solutions() {
   return (
-    <section style={{ padding: "80px 24px", background: "#f9fafb" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, textAlign: "center", color: "#111", marginBottom: 16 }}>
+    <section className="section-padding" style={{ background: "#f9fafb" }}>
+      <div className="section-inner">
+        <h2 style={{ fontSize: "clamp(24px, 4vw, 48px)", fontWeight: 900, textAlign: "center", color: "#111", marginBottom: 16 }}>
           Op maat gemaakte technologie voor elke recruiter
         </h2>
         <p style={{ textAlign: "center", color: "#6b7280", fontSize: 16, maxWidth: 580, margin: "0 auto 48px", lineHeight: 1.6 }}>
           Of je nu in-house werkt, bij een bureau, of als zelfstandige — Elvatix past zich aan jouw workflow aan.
         </p>
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24 }}>
+        <div className="grid-3">
           {solutions.map((s, i) => (
-            <div key={i} style={{ padding: 32, borderRadius: 16, background: "#fff", border: "1px solid #e5e7eb", transition: "transform 0.3s ease" }}>
+            <div key={i} style={{ padding: "clamp(20px, 3vw, 32px)", borderRadius: 16, background: "#fff", border: "1px solid #e5e7eb", transition: "transform 0.3s ease" }}>
               <div style={{ fontSize: 32, marginBottom: 16 }}>{s.icon}</div>
               <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111", marginBottom: 8 }}>{s.title} →</h3>
               <p style={{ fontSize: 14, color: "#6b7280", lineHeight: 1.6 }}>{s.desc}</p>

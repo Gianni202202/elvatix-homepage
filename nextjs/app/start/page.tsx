@@ -2,7 +2,7 @@
 
 export default function StartPage() {
   return (
-    <main style={{ paddingTop: 100, minHeight: "80vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <main className="page-top" style={{ minHeight: "80vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ maxWidth: 480, width: "100%", padding: 24 }}>
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <h1 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 900, color: "#111", marginBottom: 12 }}>

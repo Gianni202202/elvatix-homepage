@@ -2,7 +2,7 @@
 
 export default function ContactPage() {
   return (
-    <main style={{ paddingTop: 100 }}>
+    <main className="page-top">
       <section style={{ padding: "80px 24px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "start" }}>
           <div>

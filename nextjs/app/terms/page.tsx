@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <main style={{ paddingTop: 100 }}>
+    <main className="page-top">
       <section style={{ padding: "80px 24px" }}>
         <div style={{ maxWidth: 700, margin: "0 auto" }}>
           <h1 style={{ fontSize: 36, fontWeight: 900, color: "#111", marginBottom: 8 }}>Algemene Voorwaarden</h1>
