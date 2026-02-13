@@ -15,10 +15,12 @@ interface ProspeoJob {
 
 function formatPeriod(startYear: number | null, startMonth: number | null, endYear: number | null, endMonth: number | null): string {
   const months = ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"];
-  const start = startYear ? `${startMonth ? months[startMonth - 1] + " " : ""}${startYear}` : "?";
-  if (!endYear && !endMonth) return `${start} – heden`;
+  const start = startYear ? `${startMonth ? months[startMonth - 1] + " " : ""}${startYear}` : null;
+  if (!endYear && !endMonth) {
+    return start ? `${start} – heden` : "geen periode";
+  }
   const end = endYear ? `${endMonth ? months[endMonth - 1] + " " : ""}${endYear}` : "?";
-  return `${start} – ${end}`;
+  return `${start || "?"} – ${end}`;
 }
 
 function formatDuration(months: number | null): string {
@@ -79,9 +81,26 @@ export async function POST(req: NextRequest) {
     const jobHistory = (person.job_history || [])
       .slice(0, 5)
       .map((job: ProspeoJob) => {
-        // Prospeo uses `current: true` and `end_year/end_month: null` for active jobs
-        const isCurrent = job.current === true || (job.end_year === null && job.end_month === null);
-        const status = isCurrent ? "HUIDIG" : "VORIG";
+        const hasStartDate = job.start_year !== null && job.start_year !== 0;
+        const hasEndDate = (job.end_year !== null && job.end_year !== 0) || (job.end_month !== null && job.end_month !== 0);
+        const noDatesAtAll = !hasStartDate && !hasEndDate;
+
+        // Determine status:
+        // - current=true from Prospeo → HUIDIG
+        // - Has start date but NO end date → HUIDIG (still active)
+        // - Both start and end are null/0 → no dates given, unknown
+        // - Has an end date → VORIG (finished)
+        let status: string;
+        if (job.current === true) {
+          status = "HUIDIG";
+        } else if (noDatesAtAll) {
+          status = "ONBEKEND";
+        } else if (hasStartDate && !hasEndDate) {
+          status = "HUIDIG";
+        } else {
+          status = "VORIG";
+        }
+
         const period = formatPeriod(job.start_year, job.start_month, job.end_year, job.end_month);
         const duration = formatDuration(job.duration_in_months);
         const seniority = job.seniority || "";

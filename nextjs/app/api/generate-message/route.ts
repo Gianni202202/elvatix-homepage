@@ -47,6 +47,7 @@ WERKERVARING TIJDLIJN (van recent naar oud):
 Elk item heeft een status-label en een periode.
 - [HUIDIG] = de kandidaat bekleedt deze functie NU nog steeds (end_year en end_month zijn null in de data, dus geen einddatum → nog actief).
 - [VORIG] = de kandidaat heeft deze functie AFGEROND (er is een einddatum → niet meer actief).
+- [ONBEKEND] = er zijn geen datums opgegeven, dus het is onduidelijk of deze functie nog actief is. Behandel dit neutraal, niet als huidig of verleden.
 ${(profile.jobHistory || []).length > 0 ? (profile.jobHistory || []).join("\n") : "  Geen werkervaring beschikbaar"}
 
 SAMENVATTING HUIDIGE SITUATIE:
