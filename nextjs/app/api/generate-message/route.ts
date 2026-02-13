@@ -38,19 +38,20 @@ export async function POST(req: NextRequest) {
     let profileContext = "";
     if (profile && profile.fullName) {
       profileContext = `
-VERRIJKT LINKEDIN PROFIEL (via scraping):
+VERRIJKT LINKEDIN PROFIEL:
 - Volledige naam: ${profile.fullName}
-- Headline (zelfbeschrijving op LinkedIn): ${profile.headline || "niet beschikbaar"}
+- Headline (eigen omschrijving op LinkedIn): ${profile.headline || "niet beschikbaar"}
 - Locatie: ${profile.location || "onbekend"}
 
-BELANGRIJK — WERKERVARING TIJDLIJN (lees dit als een CV, van boven naar beneden):
-Items met [HUIDIG] zijn functies die de kandidaat NU bekleedt.
-Items met [VORIG] zijn functies uit het VERLEDEN — de kandidaat werkt hier NIET meer.
-${(profile.jobHistory || []).length > 0 ? (profile.jobHistory || []).map((j: string) => `  ${j}`).join("\n") : "  Geen werkervaring beschikbaar"}
+WERKERVARING TIJDLIJN (van recent naar oud):
+Elk item heeft een status-label en een periode.
+- [HUIDIG] = de kandidaat bekleedt deze functie NU nog steeds (end_year en end_month zijn null in de data, dus geen einddatum → nog actief).
+- [VORIG] = de kandidaat heeft deze functie AFGEROND (er is een einddatum → niet meer actief).
+${(profile.jobHistory || []).length > 0 ? (profile.jobHistory || []).join("\n") : "  Geen werkervaring beschikbaar"}
 
-HUIDIGE SITUATIE (gebaseerd op bovenstaande tijdlijn):
-- Huidige functietitel: ${profile.currentTitle || "onbekend"}
-- Huidig bedrijf: ${profile.companyName || "onbekend"}
+SAMENVATTING HUIDIGE SITUATIE:
+- De kandidaat werkt NU als: ${profile.currentTitle || "onbekend"}
+- Bij het bedrijf: ${profile.companyName || "onbekend"}
 
 Skills: ${(profile.skills || []).join(", ") || "niet beschikbaar"}`;
     }
@@ -69,31 +70,32 @@ KANDIDAAT:
 - Functie waarvoor geworven wordt: ${jobTitle || "niet gespecificeerd"}
 ${profileContext}
 
-KRITIEKE REGELS OVER WERKERVARING:
-1. Functies gemarkeerd als [VORIG] zijn VERLEDEN TIJD. De kandidaat werkt daar NIET meer. Verwijs ernaar in de verleden tijd ("je ervaring bij X", "je tijd bij Y").
-2. Functies gemarkeerd als [HUIDIG] zijn ACTIEF. De kandidaat werkt daar NU. Gebruik tegenwoordige tijd ("je rol bij X", "wat je doet bij Y").
-3. Haal NOOIT vorige en huidige functies door elkaar. Als iemand vroeger bij Microsoft werkte en nu bij een startup zit, zeg dan NIET "wat je bij Microsoft doet" maar "je ervaring bij Microsoft".
-4. De headline (zelfbeschrijving) is hoe de kandidaat ZICHZELF omschrijft — gebruik dit als context voor hoe ze hun carrière zien.
+KRITIEKE REGELS OVER WERKERVARING (volg deze STRIKT):
+1. Items met [HUIDIG] → de kandidaat doet dit NU. Gebruik tegenwoordige tijd. Voorbeeld: "je rol als X bij Y", "wat je nu doet bij Z".
+2. Items met [VORIG] → dit is VERLEDEN TIJD. De kandidaat werkt hier NIET meer. Gebruik verleden tijd. Voorbeeld: "je ervaring als X bij Y", "je tijd bij Z".
+3. Kijk naar de periode (bijv. "okt 2022 – heden" = nog actief, "jul 2020 – okt 2022" = afgelopen). "heden" = huidige baan. Een einddatum = vorige baan.
+4. Haal NOOIT functies door elkaar. Als iemand van 2020-2022 Chairman was en sinds 2022 CEO is, refereer dan aan de CEO-rol als huidig en de Chairman-rol als verleden.
+5. De headline is hoe de kandidaat zichzelf profileert — gebruik dit als context maar niet als feit over hun functie.
 
 BERICHTEN:
 
 1) INMAIL (max 150 woorden):
 - ${toneInstruction}
 - Spreek aan met voornaam "${firstName}".
-- Refereer concreet aan iets specifieks uit het profiel: hun HUIDIGE rol, een specifieke skill, of hun carrièrepad.
-- Noem de functie waarvoor je werft.
-- Geen generieke openingszinnen als "Ik zag je profiel" of "Ik was onder de indruk".
+- Verwijs specifiek naar hun HUIDIGE rol of een opvallend carrièrepad.
+- Noem de functie waarvoor je werft: "${jobTitle || "niet gespecificeerd"}".
+- Geen generieke zinnen als "Ik zag je profiel" of "Ik was onder de indruk".
 - Eindig met een uitnodiging voor een kort gesprek of koffie.
 - Schrijf in het Nederlands.
 
-2) CONNECTIEVERZOEK (MAXIMAAL 300 karakters inclusief spaties — LinkedIn limiet):
+2) CONNECTIEVERZOEK (MAXIMAAL 300 karakters inclusief spaties — harde LinkedIn limiet):
 - Heel kort en concreet.
 - Noem een specifiek detail uit het profiel.
-- Geef een reden om te connecten.
-- Geen formele afsluiting.
+- Geef een duidelijke reden om te connecten.
+- Geen formele afsluiting nodig.
 - Schrijf in het Nederlands.
 
-ANTWOORD FORMAT (volg dit EXACT, geen extra tekst):
+ANTWOORD FORMAT (volg dit EXACT, geen extra tekst eromheen):
 ---INMAIL---
 [Het InMail bericht]
 ---CONNECTIE---

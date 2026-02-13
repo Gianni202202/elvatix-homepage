@@ -1,5 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 
+interface ProspeoJob {
+  title: string;
+  company_name: string;
+  current: boolean;
+  start_year: number | null;
+  start_month: number | null;
+  end_year: number | null;
+  end_month: number | null;
+  duration_in_months: number | null;
+  seniority: string | null;
+  departments: string[];
+}
+
+function formatPeriod(startYear: number | null, startMonth: number | null, endYear: number | null, endMonth: number | null): string {
+  const months = ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"];
+  const start = startYear ? `${startMonth ? months[startMonth - 1] + " " : ""}${startYear}` : "?";
+  if (!endYear && !endMonth) return `${start} – heden`;
+  const end = endYear ? `${endMonth ? months[endMonth - 1] + " " : ""}${endYear}` : "?";
+  return `${start} – ${end}`;
+}
+
+function formatDuration(months: number | null): string {
+  if (!months) return "";
+  const years = Math.floor(months / 12);
+  const remainder = months % 12;
+  if (years === 0) return `${remainder} mnd`;
+  if (remainder === 0) return `${years} jr`;
+  return `${years} jr ${remainder} mnd`;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { linkedinUrl } = await req.json();
@@ -45,15 +75,18 @@ export async function POST(req: NextRequest) {
     const person = data.person;
     const company = data.company;
 
-    // Build job history with current/past distinction and dates
+    // Build detailed job history using actual Prospeo fields
     const jobHistory = (person.job_history || [])
       .slice(0, 5)
-      .map((job: { title: string; company_name: string; duration_in_months?: number; is_current?: boolean; start_date?: string; end_date?: string }, idx: number) => {
-        const isCurrent = job.is_current || idx === 0;
-        const years = job.duration_in_months ? Math.round(job.duration_in_months / 12) : null;
-        const duration = years ? `${years} jaar` : "";
-        const period = isCurrent ? "HUIDIG" : "VORIG";
-        return `[${period}] ${job.title} bij ${job.company_name}${duration ? ` (${duration})` : ""}`;
+      .map((job: ProspeoJob) => {
+        // Prospeo uses `current: true` and `end_year/end_month: null` for active jobs
+        const isCurrent = job.current === true || (job.end_year === null && job.end_month === null);
+        const status = isCurrent ? "HUIDIG" : "VORIG";
+        const period = formatPeriod(job.start_year, job.start_month, job.end_year, job.end_month);
+        const duration = formatDuration(job.duration_in_months);
+        const seniority = job.seniority || "";
+
+        return `[${status}] ${job.title} bij ${job.company_name} (${period}${duration ? ", " + duration : ""}${seniority ? " | " + seniority : ""})`;
       });
 
     return NextResponse.json({
