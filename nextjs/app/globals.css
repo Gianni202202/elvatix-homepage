@@ -132,6 +132,7 @@ body {
               TABLET: 768px - 1024px
    ═══════════════════════════════════════════ */
 @media (max-width: 1024px) {
+  /* ── Class-based grid overrides ── */
   .grid-2 { grid-template-columns: 1fr; gap: 32px; }
   .grid-3 { grid-template-columns: repeat(2, 1fr); }
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -142,10 +143,30 @@ body {
   .comparison-grid { grid-template-columns: 1fr; gap: 16px; }
   .stats-card { padding: 48px 32px; }
 
-  /* Override inline 2-col grids */
+  /* ── Inline grid overrides (covers all pages) ── */
   main [style*="grid-template-columns: 1fr 1fr"],
   main [style*="grid-template-columns:1fr 1fr"] {
     grid-template-columns: 1fr !important;
+  }
+  main [style*="grid-template-columns: repeat(3"],
+  main [style*="grid-template-columns:repeat(3"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  /* Solutions page alternating grids */
+  main [style*="grid-template-columns: 1fr 2fr"],
+  main [style*="grid-template-columns: 2fr 1fr"],
+  main [style*="grid-template-columns:1fr 2fr"],
+  main [style*="grid-template-columns:2fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Inline padding reduction */
+  main [style*="padding: 48px"],
+  main [style*="padding: 48"] {
+    padding: 32px 20px !important;
+  }
+  main [style*="gap: 64"],
+  main [style*="gap: 48"] {
+    gap: 32px !important;
   }
 }
 
@@ -168,7 +189,7 @@ body {
   .mobile-nav.open a:last-child { border-bottom: none; }
   .mobile-nav.open .pill-btn { text-align: center; justify-content: center; width: 100%; margin-top: 8px; }
 
-  /* ── Grid overrides ── */
+  /* ── Class-based grid overrides ── */
   .grid-2 { grid-template-columns: 1fr; gap: 24px; }
   .grid-3 { grid-template-columns: 1fr; }
   .grid-4 { grid-template-columns: 1fr; }
@@ -188,31 +209,125 @@ body {
   .section-padding { padding: 48px 16px; }
   .page-top { padding-top: 80px; }
 
-  /* ── Inline style overrides ── */
+  /* ═══════════════════════════════════════════
+     INLINE STYLE OVERRIDES — all pages
+     ═══════════════════════════════════════════ */
+
+  /* ── ALL inline grids → 1 column ── */
   main [style*="grid-template-columns: repeat(3"],
   main [style*="grid-template-columns:repeat(3"],
-  main [style*="grid-template-columns: 1fr 1fr 1fr"] {
+  main [style*="grid-template-columns: 1fr 1fr 1fr"],
+  main [style*="grid-template-columns:1fr 1fr 1fr"] {
     grid-template-columns: 1fr !important;
   }
   main [style*="grid-template-columns: repeat(2"],
-  main [style*="grid-template-columns:repeat(2"] {
+  main [style*="grid-template-columns:repeat(2"],
+  main [style*="grid-template-columns: 1fr 1fr"],
+  main [style*="grid-template-columns:1fr 1fr"] {
     grid-template-columns: 1fr !important;
   }
+  main [style*="grid-template-columns: repeat(4"],
+  main [style*="grid-template-columns:repeat(4"],
+  main [style*="grid-template-columns: repeat(5"],
+  main [style*="grid-template-columns:repeat(5"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Solutions page alternating grids */
+  main [style*="grid-template-columns: 1fr 2fr"],
+  main [style*="grid-template-columns: 2fr 1fr"],
+  main [style*="grid-template-columns:1fr 2fr"],
+  main [style*="grid-template-columns:2fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Flex wrapping for button groups ── */
   main [style*="display: flex"][style*="gap"] {
     flex-wrap: wrap;
   }
-  main img, main video, main iframe {
-    max-width: 100%;
-    height: auto;
+  /* CTA button rows → stack vertically */
+  main [style*="display: flex"][style*="justify-content: center"][style*="gap"] {
+    flex-direction: column;
+    align-items: stretch;
   }
+  main [style*="display: flex"][style*="justify-content: center"][style*="gap"] .pill-btn {
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* ── Images, video, iframes constrained ── */
+  main img, main video, main iframe {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* ── Padding reductions ── */
   main [style*="padding: 48px"],
-  main [style*="padding: 40px"] {
+  main [style*="padding: 48"] {
     padding: 24px 16px !important;
+  }
+  main [style*="padding: 40px"],
+  main [style*="padding: 40px 32px"] {
+    padding: 24px 16px !important;
+  }
+  main section[style*="padding: 80px 24px"] {
+    padding: 48px 16px !important;
+  }
+  main section[style*="padding: 60px 24px"] {
+    padding: 36px 16px !important;
+  }
+  main section[style*="padding: 0 24px 80px"] {
+    padding: 0 16px 48px !important;
+  }
+
+  /* ── Gap reductions ── */
+  main [style*="gap: 64"],
+  main [style*="gap: 48"] {
+    gap: 24px !important;
+  }
+  main [style*="gap: 32"] {
+    gap: 20px !important;
+  }
+
+  /* ── Max-width containers fill screen ── */
+  main [style*="maxWidth: 1100"],
+  main [style*="max-width: 1100"],
+  main [style*="maxWidth: 1000"],
+  main [style*="max-width: 1000"],
+  main [style*="maxWidth: 900"],
+  main [style*="max-width: 900"] {
+    max-width: 100% !important;
+  }
+
+  /* ── Form inputs full width ── */
+  main input, main select, main textarea {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ── Border-radius reduction on cards ── */
+  main [style*="borderRadius: 24"],
+  main [style*="border-radius: 24px"] {
+    border-radius: 16px !important;
+  }
+
+  /* ── Login/Start centered forms ── */
+  main[style*="minHeight: 80vh"],
+  main[style*="min-height: 80vh"] {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
   /* ── LeadMagnet mobile ── */
   #lead-magnet { padding: 48px 16px !important; }
   #lead-magnet > div:first-child { max-width: 100% !important; }
+
+  /* ── Hero background blobs scale down ── */
+  main section [style*="width: 384"],
+  main section [style*="width: 320"] {
+    width: 200px !important;
+    height: 200px !important;
+  }
 }
 
 /* ═══════════════════════════════════════════
@@ -225,11 +340,54 @@ body {
   .section-padding { padding: 36px 12px; }
   .page-top { padding-top: 70px; }
 
+  /* ── Form name grids → stacked ── */
   main form [style*="grid-template-columns"] {
     grid-template-columns: 1fr !important;
   }
+  /* ── CTA flex groups → stacked ── */
   main [style*="display: flex"][style*="justify-content: center"] {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+  }
+  main [style*="display: flex"][style*="justify-content: center"] .pill-btn {
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* ── Extra padding reduction ── */
+  main section[style*="padding: 80px 24px"],
+  main section[style*="padding: 80px"] {
+    padding: 32px 12px !important;
+  }
+  main [style*="padding: 32px"],
+  main [style*="padding: 32"] {
+    padding: 20px 12px !important;
+  }
+  main [style*="padding: 40px 32px"] {
+    padding: 20px 14px !important;
+  }
+
+  /* ── Quote card compact ── */
+  .quote-card { padding: 16px 12px; }
+
+  /* ── Font scaling for large headings ── */
+  main h1 { word-break: break-word; }
+  main h2 { word-break: break-word; }
+
+  /* ── Emoji icons in Solutions page ── */
+  main [style*="fontSize: 80"],
+  main [style*="font-size: 80px"] {
+    font-size: 48px !important;
+  }
+
+  /* ── Login/Start form padding ── */
+  main[style*="minHeight: 80vh"] > div,
+  main[style*="min-height: 80vh"] > div {
+    padding: 16px !important;
+  }
+  main[style*="minHeight: 80vh"] > div > div[style*="padding"],
+  main[style*="min-height: 80vh"] > div > div[style*="padding"] {
+    padding: 24px 16px !important;
   }
 }
