@@ -1,31 +1,34 @@
-"use client";
+import Container from '@/components/ui/Container';
 
 const stats = [
-  { number: "85%", label: "Minder tijd per InMail" },
-  { number: "3x", label: "Hogere response rate" },
-  { number: "500+", label: "Actieve recruiters" },
+  { value: '10x', label: 'Snellere outreach' },
+  { value: '85%', label: 'Hogere response rate' },
+  { value: '500+', label: 'Actieve recruiters' },
+  { value: '2M+', label: 'Berichten verzonden' },
 ];
 
 export default function Stats() {
   return (
-    <section className="section-padding" style={{ background: "linear-gradient(135deg, #8db600 0%, #a3c520 30%, #8db600 60%, #6a9a00 100%)" }}>
-      <div style={{ maxWidth: 900, margin: "0 auto" }}>
-        <div className="stats-card">
-          <div className="grid-3" style={{ textAlign: "center" }}>
-            {stats.map((stat, i) => (
-              <div key={i}>
-                <div style={{ fontSize: "clamp(36px, 6vw, 80px)", fontWeight: 900, marginBottom: 8, background: "linear-gradient(135deg, #8db600 0%, #7aa300 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                  {stat.number}
-                </div>
-                <p style={{ color: "#6b7280", fontSize: "clamp(13px, 1.5vw, 16px)", fontWeight: 500 }}>{stat.label}</p>
-              </div>
-            ))}
-          </div>
+    <section className="py-20 bg-gray-50">
+      <Container>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            De cijfers liegen niet
+          </h2>
         </div>
-        <div style={{ textAlign: "center", marginTop: 40 }}>
-          <a href="/demo" className="pill-btn pill-btn-primary" style={{ padding: "14px 32px" }}>Meer weten over Elvatix</a>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          {stats.map((stat, i) => (
+            <div
+              key={i}
+              className="text-center p-8 bg-white rounded-card border border-gray-200 hover:shadow-lg transition-shadow"
+            >
+              <p className="text-4xl md:text-5xl font-black text-linkedin mb-2">{stat.value}</p>
+              <p className="text-gray-600 text-sm font-medium">{stat.label}</p>
+            </div>
+          ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
