@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'app.elvatix.com',
+      },
+      {
+        protocol: 'https',
         hostname: '**.amazonaws.com',
       },
       {
