@@ -1,48 +1,48 @@
-import type { Metadata } from "next";
+import Container from '@/components/ui/Container';
+import Button from '@/components/ui/Button';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "AI InMails — Elvatix",
-  description: "Genereer gepersonaliseerde LinkedIn InMails op basis van profieldata. Elke keer uniek, relevant en in natuurlijk Nederlands.",
+  title: 'AI InMails \u2014 Elvatix',
+  description: 'Genereer gepersonaliseerde LinkedIn InMails op basis van profieldata. Elke keer uniek, relevant en in natuurlijk Nederlands.',
 };
+
+const features = [
+  { title: 'Profiel-gebaseerde personalisatie', desc: 'Elvatix leest werkervaring, headline, skills en carri\u00E8repad. Het bericht refereert aan specifieke details \u2014 geen generieke zinnen.' },
+  { title: 'Chronologisch bewust', desc: 'AI onderscheidt huidige en vorige functies. Iemand die nu CEO is en eerder developer was? Het bericht klopt altijd.' },
+  { title: 'Tone-of-voice controle', desc: 'Kies tussen formeel en informeel. Of train Custom GPT op jouw eigen schrijfstijl voor maximale consistentie.' },
+  { title: 'Nederlands \u00E9n Engels', desc: 'Native kwaliteit in beide talen. Geen vertaaltaal of stijve constructies \u2014 gewoon hoe een mens het zou schrijven.' },
+];
 
 export default function InMailsPage() {
   return (
-    <main className="page-top">
-      <section style={{ padding: "80px 24px", textAlign: "center" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <p style={{ fontSize: 13, fontWeight: 600, color: "#8db600", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>InMails</p>
-          <h1 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 900, color: "#111", lineHeight: 1.1, marginBottom: 24 }}>
-            InMails die gelezen worden
-          </h1>
-          <p style={{ fontSize: 18, color: "#6b7280", lineHeight: 1.7, maxWidth: 600, margin: "0 auto 40px" }}>
-            Geen copy-paste templates meer. Elvatix analyseert het volledige LinkedIn profiel en schrijft een bericht dat aansluit op de werkervaring, skills en carrière van je kandidaat.
-          </p>
-          <div style={{ fontSize: 100, marginBottom: 40 }}>💬</div>
-        </div>
-      </section>
+    <main className="pt-32 pb-0">
+      <Container className="text-center mb-16">
+        <span className="inline-block px-4 py-1.5 rounded-full bg-linkedin-light text-linkedin text-sm font-semibold mb-4">InMails</span>
+        <h1 className="text-4xl md:text-6xl font-black text-gray-900 mb-6">InMails die gelezen worden</h1>
+        <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto mb-10">
+          Geen copy-paste templates meer. Elvatix analyseert het volledige LinkedIn profiel en schrijft een bericht dat aansluit op de werkervaring, skills en carri\u00E8re van je kandidaat.
+        </p>
+        <div className="text-8xl mb-10">\uD83D\uDCAC</div>
+      </Container>
 
-      <section style={{ padding: "0 24px 80px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", flexDirection: "column", gap: 24 }}>
-          {[
-            { title: "Profiel-gebaseerde personalisatie", desc: "Elvatix leest werkervaring, headline, skills en carrièrepad. Het bericht refereert aan specifieke details — geen generieke zinnen." },
-            { title: "Chronologisch bewust", desc: "AI onderscheidt huidige en vorige functies. Iemand die nu CEO is en eerder developer was? Het bericht klopt altijd." },
-            { title: "Tone-of-voice controle", desc: "Kies tussen formeel en informeel. Of train Custom GPT op jouw eigen schrijfstijl voor maximale consistentie." },
-            { title: "Nederlands én Engels", desc: "Native kwaliteit in beide talen. Geen vertaaltaal of stijve constructies — gewoon hoe een mens het zou schrijven." },
-          ].map((item) => (
-            <div key={item.title} style={{ background: "#f9fafb", borderRadius: 16, padding: 32, border: "1px solid #e5e7eb" }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111", marginBottom: 8 }}>{item.title}</h3>
-              <p style={{ fontSize: 15, color: "#6b7280", lineHeight: 1.7 }}>{item.desc}</p>
+      <Container className="max-w-4xl mb-16">
+        <div className="flex flex-col gap-6">
+          {features.map((item) => (
+            <div key={item.title} className="bg-gray-50 rounded-card p-8 border border-gray-200">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+              <p className="text-gray-600 leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
-      </section>
+      </Container>
 
-      <section style={{ padding: "80px 24px", background: "#111", textAlign: "center" }}>
-        <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 800, color: "#fff", marginBottom: 16 }}>Probeer het zelf</h2>
-          <p style={{ color: "#9ca3af", fontSize: 16, marginBottom: 32 }}>Ga naar de homepage en test de InMail generator met een LinkedIn URL.</p>
-          <a href="/#lead-magnet" className="pill-btn pill-btn-white" style={{ padding: "14px 32px", fontSize: 16 }}>Probeer gratis →</a>
-        </div>
+      <section className="bg-gradient-to-br from-linkedin via-linkedin-dark to-[#003366] py-20">
+        <Container className="text-center">
+          <h2 className="text-3xl font-extrabold text-white mb-4">Probeer het zelf</h2>
+          <p className="text-white/70 mb-8">Ga naar de homepage en test de InMail generator met een LinkedIn URL.</p>
+          <Button variant="white" href="/#lead-magnet">Probeer gratis &rarr;</Button>
+        </Container>
       </section>
     </main>
   );
