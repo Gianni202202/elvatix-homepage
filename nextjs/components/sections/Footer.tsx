@@ -1,67 +1,90 @@
-"use client";
+import Link from 'next/link';
+import Container from '@/components/ui/Container';
 
 const columns = [
-  { title: "PLATFORM", links: [
-    { label: "AI Copilot", href: "/platform" },
-    { label: "InMails", href: "/features/inmails" },
-    { label: "Connectieverzoeken", href: "/features/connections" },
-    { label: "Reminders", href: "/features/reminders" },
-    { label: "Custom GPT", href: "/platform" },
-    { label: "Templates", href: "/platform" },
-    { label: "Analytics", href: "/features/analytics" },
-  ]},
-  { title: "VOOR WIE", links: [
-    { label: "Recruitmentbureaus", href: "/solutions" },
-    { label: "Detacheringsbureaus", href: "/solutions" },
-    { label: "Corporate Recruiters", href: "/solutions" },
-    { label: "Executive Search", href: "/solutions" },
-    { label: "Freelancers", href: "/solutions" },
-  ]},
-  { title: "CASE STUDIES", links: [
-    { label: "Manpower", href: "/cases" },
-    { label: "Vibe Group", href: "/cases" },
-  ]},
-  { title: "RESOURCES", links: [
-    { label: "Blog", href: "/blog" },
-    { label: "Integraties", href: "/integraties" },
-    { label: "Pricing", href: "/pricing" },
-  ]},
-  { title: "BEDRIJF", links: [
-    { label: "Over ons", href: "/over-ons" },
-    { label: "Contact", href: "/contact" },
-    { label: "Privacy", href: "/privacy" },
-    { label: "Terms", href: "/terms" },
-  ]},
+  {
+    title: 'Product',
+    links: [
+      { label: 'Platform', href: '/platform' },
+      { label: 'Features', href: '/features' },
+      { label: 'Integraties', href: '/integraties' },
+      { label: 'Pricing', href: '/pricing' },
+    ],
+  },
+  {
+    title: 'Oplossingen',
+    links: [
+      { label: 'Voor Bureaus', href: '/solutions' },
+      { label: 'Voor In-house', href: '/solutions' },
+      { label: 'Voor Freelancers', href: '/solutions' },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Blog', href: '/blog' },
+      { label: 'Cases', href: '/cases' },
+      { label: 'Demo', href: '/demo' },
+    ],
+  },
+  {
+    title: 'Bedrijf',
+    links: [
+      { label: 'Over ons', href: '/over-ons' },
+      { label: 'Contact', href: '/contact' },
+      { label: 'Login', href: '/login' },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      { label: 'Privacy', href: '/privacy' },
+      { label: 'Terms', href: '/terms' },
+    ],
+  },
 ];
 
 export default function Footer() {
   return (
-    <footer style={{ padding: "64px 24px 32px", background: "#fff", borderTop: "1px solid #e5e7eb" }}>
-      <div className="section-inner">
-        <div className="footer-grid">
-          {columns.map((col, i) => (
-            <div key={i}>
-              <h4 style={{ fontSize: 12, fontWeight: 700, color: "#374151", letterSpacing: "0.1em", marginBottom: 16 }}>{col.title}</h4>
-              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+    <footer className="bg-gray-50 border-t border-gray-200 py-16">
+      <Container>
+        {/* Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
+          {columns.map((col) => (
+            <div key={col.title}>
+              <h4 className="font-semibold text-gray-900 mb-4 text-sm">{col.title}</h4>
+              <ul className="space-y-2 list-none p-0">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <a href={link.href} style={{ fontSize: 14, color: "#6b7280", textDecoration: "none" }}>{link.label}</a>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-gray-500 hover:text-gray-900 transition-colors no-underline"
+                    >
+                      {link.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-        <div className="footer-bottom">
+
+        {/* Bottom bar */}
+        <div className="flex flex-col sm:flex-row justify-between items-center border-t border-gray-200 pt-6 gap-4">
           <div>
-            <h3 style={{ fontSize: 20, fontWeight: 800, color: "#111", marginBottom: 4 }}>Elvatix</h3>
-            <p style={{ fontSize: 13, color: "#9ca3af" }}>© 2026 Elvatix. Alle rechten voorbehouden.</p>
+            <h3 className="font-bold text-gray-900">Elvatix</h3>
+            <p className="text-sm text-gray-500">2026 Elvatix. Alle rechten voorbehouden.</p>
           </div>
-          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <a href="https://linkedin.com/company/elvatix" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>LinkedIn</a>
-          </div>
+          <a
+            href="https://linkedin.com/company/elvatix"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-linkedin hover:text-linkedin-dark transition-colors no-underline"
+          >
+            LinkedIn
+          </a>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 }
