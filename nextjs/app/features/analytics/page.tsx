@@ -1,50 +1,67 @@
-import type { Metadata } from "next";
+import Container from '@/components/ui/Container';
+import Button from '@/components/ui/Button';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Analytics \u2014 Elvatix",
-  description: "Inzicht in je outreach performance. Zie welke berichten converteren en optimaliseer je recruitment strategie.",
+  title: 'Analytics \u2014 Elvatix',
+  description: 'Inzicht in je outreach performance. Zie welke berichten converteren en optimaliseer je recruitment strategie.',
 };
+
+const stats = [
+  { label: 'Berichten verstuurd', value: '1.247', change: '+23%' },
+  { label: 'Response rate', value: '41%', change: '+12%' },
+  { label: 'Connectie-acceptatie', value: '52%', change: '+8%' },
+  { label: 'Gesprekken gepland', value: '89', change: '+31%' },
+];
+
+const features = [
+  { title: 'Response tracking', desc: 'Zie welke berichten reacties opleveren en welke niet. Leer van je beste prestaties.' },
+  { title: 'Template vergelijking', desc: 'A/B test verschillende tonen en aanpakken. Data vertelt je wat werkt voor jouw doelgroep.' },
+  { title: 'Team performance', desc: 'Vergelijk resultaten binnen je team. Identificeer best practices en deel ze eenvoudig.' },
+  { title: 'Export & rapportages', desc: 'Download je data als CSV of PDF. Ideaal voor management rapportages en klantpresentaties.' },
+];
 
 export default function AnalyticsPage() {
   return (
-    <main className="page-top">
-      <section style={{ padding: "80px 24px", textAlign: "center" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <p style={{ fontSize: 13, fontWeight: 600, color: "#8db600", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Analytics</p>
-          <h1 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 900, color: "#111", lineHeight: 1.1, marginBottom: 24 }}>Data-gedreven recruitment</h1>
-          <p style={{ fontSize: 18, color: "#6b7280", lineHeight: 1.7, maxWidth: 600, margin: "0 auto 40px" }}>Stop met gokken. Zie precies welke berichten, templates en aanpakken de beste resultaten opleveren.</p>
-        </div>
-      </section>
-      <section style={{ padding: "0 24px 80px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <div style={{ background: "#f9fafb", borderRadius: 20, padding: 40, border: "1px solid #e5e7eb", marginBottom: 32 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111", marginBottom: 24 }}>Performance overzicht</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
-              {[{ label: "Berichten verstuurd", value: "1.247", change: "+23%" }, { label: "Response rate", value: "41%", change: "+12%" }, { label: "Connectie-acceptatie", value: "52%", change: "+8%" }, { label: "Gesprekken gepland", value: "89", change: "+31%" }].map((s) => (
-                <div key={s.label} style={{ background: "#fff", borderRadius: 12, padding: 20, border: "1px solid #e5e7eb" }}>
-                  <p style={{ fontSize: 12, color: "#6b7280", marginBottom: 8 }}>{s.label}</p>
-                  <p style={{ fontSize: 28, fontWeight: 800, color: "#111", marginBottom: 4 }}>{s.value}</p>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: "#16a34a" }}>{s.change}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            {[{ title: "Response tracking", desc: "Zie welke berichten reacties opleveren en welke niet. Leer van je beste prestaties." }, { title: "Template vergelijking", desc: "A/B test verschillende tonen en aanpakken. Data vertelt je wat werkt voor jouw doelgroep." }, { title: "Team performance", desc: "Vergelijk resultaten binnen je team. Identificeer best practices en deel ze eenvoudig." }, { title: "Export & rapportages", desc: "Download je data als CSV of PDF. Ideaal voor management rapportages en klantpresentaties." }].map((item) => (
-              <div key={item.title} style={{ background: "#f9fafb", borderRadius: 16, padding: 32, border: "1px solid #e5e7eb" }}>
-                <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111", marginBottom: 8 }}>{item.title}</h3>
-                <p style={{ fontSize: 15, color: "#6b7280", lineHeight: 1.7 }}>{item.desc}</p>
+    <main className="pt-32 pb-0">
+      <Container className="text-center mb-16">
+        <span className="inline-block px-4 py-1.5 rounded-full bg-linkedin-light text-linkedin text-sm font-semibold mb-4">Analytics</span>
+        <h1 className="text-4xl md:text-6xl font-black text-gray-900 mb-6">Data-gedreven recruitment</h1>
+        <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
+          Stop met gokken. Zie precies welke berichten, templates en aanpakken de beste resultaten opleveren.
+        </p>
+      </Container>
+
+      <Container className="max-w-4xl mb-16">
+        <div className="bg-gray-50 rounded-card p-8 md:p-10 border border-gray-200 mb-8">
+          <h3 className="text-lg font-bold text-gray-900 mb-6">Performance overzicht</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {stats.map((s) => (
+              <div key={s.label} className="bg-white rounded-xl p-5 border border-gray-200">
+                <p className="text-xs text-gray-500 mb-2">{s.label}</p>
+                <p className="text-3xl font-extrabold text-gray-900 mb-1">{s.value}</p>
+                <p className="text-sm font-semibold text-green-600">{s.change}</p>
               </div>
             ))}
           </div>
         </div>
-      </section>
-      <section style={{ padding: "80px 24px", background: "#111", textAlign: "center" }}>
-        <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 800, color: "#fff", marginBottom: 16 }}>Klaar om je resultaten te meten?</h2>
-          <p style={{ color: "#9ca3af", fontSize: 16, marginBottom: 32 }}>Analytics is beschikbaar in het Pro-plan.</p>
-          <a href="/pricing" className="pill-btn pill-btn-white" style={{ padding: "14px 32px", fontSize: 16 }}>Bekijk pricing</a>
+
+        <div className="flex flex-col gap-6">
+          {features.map((item) => (
+            <div key={item.title} className="bg-gray-50 rounded-card p-8 border border-gray-200">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+              <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
         </div>
+      </Container>
+
+      <section className="bg-gradient-to-br from-linkedin via-linkedin-dark to-[#003366] py-20">
+        <Container className="text-center">
+          <h2 className="text-3xl font-extrabold text-white mb-4">Klaar om je resultaten te meten?</h2>
+          <p className="text-white/70 mb-8">Analytics is beschikbaar in het Pro-plan.</p>
+          <Button variant="white" href="/pricing">Bekijk pricing</Button>
+        </Container>
       </section>
     </main>
   );
