@@ -1,78 +1,90 @@
-import type { Metadata } from "next";
+import { getAllBlogs, generateSlug } from '@/lib/bubble-api';
+import Image from 'next/image';
+import Link from 'next/link';
+import Container from '@/components/ui/Container';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Blog — Elvatix",
-  description: "Tips, inzichten en best practices voor LinkedIn recruitment. Leer van de beste recruiters in Nederland.",
+  title: 'Blog | Elvatix',
+  description: 'Praktische tips, data-gedreven inzichten en verhalen van recruiters die slimmer werken.',
 };
 
-const posts = [
-  {
-    title: "5 manieren om je LinkedIn InMail response rate te verdubbelen",
-    excerpt: "Generieke berichten zijn dood. Ontdek vijf bewezen technieken waarmee toprecuiters hun response rates hebben verdubbeld — zonder meer uren te werken.",
-    date: "6 februari 2026",
-    category: "Best Practices",
-    readTime: "5 min",
-  },
-  {
-    title: "Waarom 90% van de connectieverzoeken wordt genegeerd",
-    excerpt: "We analyseerden 10.000 connectieverzoeken en ontdekten waarom de meeste worden genegeerd. Het probleem zit niet in de boodschap — maar in de eerste vijf woorden.",
-    date: "28 januari 2026",
-    category: "Data & Insights",
-    readTime: "7 min",
-  },
-  {
-    title: "AI in recruitment: hype of game-changer?",
-    excerpt: "Iedereen praat over AI, maar wat werkt écht in de praktijk? We spraken met 20 recruiters die AI-tools gebruiken en delen hun eerlijke ervaring.",
-    date: "15 januari 2026",
-    category: "Trends",
-    readTime: "8 min",
-  },
-  {
-    title: "De perfecte follow-up: timing, toon en inhoud",
-    excerpt: "80% van de plaatsingen komt na het 2e of 3e contact. Maar hoe schrijf je een follow-up die niet irritant is? Een handleiding met voorbeelden.",
-    date: "3 januari 2026",
-    category: "Best Practices",
-    readTime: "6 min",
-  },
-  {
-    title: "Van 10 naar 60 berichten per dag: hoe Vibe Group schaalde zonder kwaliteitsverlies",
-    excerpt: "Vibe Group verviervoudigde hun outreach volume met behoud van personalisatie. Lees hoe ze dat deden met een combinatie van AI en slimme workflows.",
-    date: "18 december 2025",
-    category: "Case Study",
-    readTime: "10 min",
-  },
-];
+export default async function BlogPage() {
+  let blogs;
 
-export default function BlogPage() {
+  try {
+    blogs = await getAllBlogs();
+  } catch {
+    blogs = [];
+  }
+
   return (
-    <main className="page-top">
-      <section style={{ padding: "80px 24px", textAlign: "center" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <p style={{ fontSize: 13, fontWeight: 600, color: "#8db600", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Blog</p>
-          <h1 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 900, color: "#111", lineHeight: 1.1, marginBottom: 24 }}>
+    <main className="pt-28 pb-20">
+      <Container>
+        {/* Header */}
+        <div className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-linkedin-light text-linkedin text-sm font-semibold mb-4">
+            Blog
+          </span>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Recruitment insights & tips
           </h1>
-          <p style={{ fontSize: 18, color: "#6b7280", lineHeight: 1.7, maxWidth: 600, margin: "0 auto" }}>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Praktische tips, data-gedreven inzichten en verhalen van recruiters die slimmer werken.
           </p>
         </div>
-      </section>
 
-      <section style={{ padding: "0 24px 80px" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto", display: "flex", flexDirection: "column", gap: 24 }}>
-          {posts.map((post) => (
-            <article key={post.title} style={{ background: "#fff", borderRadius: 16, padding: 32, border: "1px solid #e5e7eb", cursor: "pointer", transition: "box-shadow 0.2s" }}>
-              <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
-                <span style={{ fontSize: 12, fontWeight: 600, color: "#8db600", background: "#f0f7d4", padding: "4px 10px", borderRadius: 6 }}>{post.category}</span>
-                <span style={{ fontSize: 12, color: "#9ca3af" }}>{post.date}</span>
-                <span style={{ fontSize: 12, color: "#9ca3af" }}>{post.readTime} lezen</span>
-              </div>
-              <h2 style={{ fontSize: 20, fontWeight: 700, color: "#111", marginBottom: 8, lineHeight: 1.3 }}>{post.title}</h2>
-              <p style={{ fontSize: 15, color: "#6b7280", lineHeight: 1.7 }}>{post.excerpt}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+        {/* Blog Grid */}
+        {blogs.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {blogs.map((blog) => {
+              const slug = generateSlug(blog["SEO title"]);
+              return (
+                <Link
+                  key={blog._id}
+                  href={`/blog/${slug}`}
+                  className="group block rounded-card overflow-hidden bg-white border border-gray-200 hover:shadow-xl transition-shadow duration-300 no-underline"
+                >
+                  {/* Image */}
+                  {blog.Image && (
+                    <div className="relative h-48 w-full overflow-hidden">
+                      <Image
+                        src={blog.Image}
+                        alt={blog["Alt text"] || blog["SEO title"]}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    </div>
+                  )}
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <p className="text-sm text-gray-500 mb-2">
+                      {new Date(blog.Date).toLocaleDateString('nl-NL', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                      {blog.Author && ` · ${blog.Author}`}
+                    </p>
+                    <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-linkedin transition-colors">
+                      {blog["SEO title"]}
+                    </h2>
+                    <p className="text-gray-600 text-sm line-clamp-3">
+                      {blog["SEO Description"]}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-center py-20">
+            <p className="text-gray-500 text-lg">Nog geen blogposts beschikbaar.</p>
+          </div>
+        )}
+      </Container>
     </main>
   );
 }
