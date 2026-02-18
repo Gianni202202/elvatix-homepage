@@ -1,47 +1,43 @@
-"use client";
+'use client';
 
-import type { Metadata } from "next";
+import Container from '@/components/ui/Container';
+import Button from '@/components/ui/Button';
+import Link from 'next/link';
 
 export default function LoginPage() {
   return (
-    <main className="page-top" style={{ minHeight: "80vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ maxWidth: 420, width: "100%", padding: "48px 40px", background: "#fff", borderRadius: 20, border: "1px solid #e5e7eb", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
-        <div style={{ textAlign: "center", marginBottom: 32 }}>
-          <h1 style={{ fontSize: 28, fontWeight: 800, color: "#111", marginBottom: 8 }}>Welkom terug</h1>
-          <p style={{ fontSize: 15, color: "#6b7280" }}>Log in op je Elvatix account</p>
+    <main className="min-h-[80vh] flex items-center justify-center pt-32 pb-16">
+      <div className="max-w-[420px] w-full px-6">
+        <div className="bg-white rounded-card p-10 border border-gray-200 shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Welkom terug</h1>
+            <p className="text-gray-500">Log in op je Elvatix account</p>
+          </div>
+
+          <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">E-mailadres</label>
+              <input type="email" placeholder="naam@bedrijf.nl" className="w-full px-4 py-3 rounded-xl border border-gray-300 text-base outline-none focus:border-linkedin focus:ring-1 focus:ring-linkedin transition-colors" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Wachtwoord</label>
+              <input type="password" placeholder="••••••••" className="w-full px-4 py-3 rounded-xl border border-gray-300 text-base outline-none focus:border-linkedin focus:ring-1 focus:ring-linkedin transition-colors" />
+            </div>
+
+            <div className="flex justify-between items-center text-sm">
+              <label className="flex items-center gap-1.5 text-gray-500 cursor-pointer">
+                <input type="checkbox" className="rounded" /> Onthoud mij
+              </label>
+              <Link href="#" className="text-linkedin font-medium no-underline hover:text-linkedin-dark transition-colors">Wachtwoord vergeten?</Link>
+            </div>
+
+            <Button variant="primary" type="submit">Inloggen</Button>
+          </form>
+
+          <p className="text-center text-sm text-gray-500 mt-6">
+            Nog geen account? <Link href="/start" className="text-linkedin font-semibold no-underline hover:text-linkedin-dark transition-colors">Start gratis &rarr;</Link>
+          </p>
         </div>
-
-        <form onSubmit={(e) => e.preventDefault()} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <div>
-            <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>E-mailadres</label>
-            <input type="email" placeholder="naam@bedrijf.nl" style={{
-              width: "100%", padding: "12px 16px", borderRadius: 10, border: "1px solid #d1d5db",
-              fontSize: 15, outline: "none", boxSizing: "border-box"
-            }} />
-          </div>
-          <div>
-            <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Wachtwoord</label>
-            <input type="password" placeholder="••••••••" style={{
-              width: "100%", padding: "12px 16px", borderRadius: 10, border: "1px solid #d1d5db",
-              fontSize: 15, outline: "none", boxSizing: "border-box"
-            }} />
-          </div>
-
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 13 }}>
-            <label style={{ display: "flex", alignItems: "center", gap: 6, color: "#6b7280", cursor: "pointer" }}>
-              <input type="checkbox" /> Onthoud mij
-            </label>
-            <a href="#" style={{ color: "#8db600", textDecoration: "none", fontWeight: 500 }}>Wachtwoord vergeten?</a>
-          </div>
-
-          <button type="submit" className="pill-btn pill-btn-primary" style={{ padding: "14px 24px", fontSize: 15, width: "100%", cursor: "pointer", border: "none", marginTop: 8 }}>
-            Inloggen
-          </button>
-        </form>
-
-        <p style={{ textAlign: "center", fontSize: 14, color: "#6b7280", marginTop: 24 }}>
-          Nog geen account? <a href="/start" style={{ color: "#8db600", fontWeight: 600, textDecoration: "none" }}>Start gratis →</a>
-        </p>
       </div>
     </main>
   );
