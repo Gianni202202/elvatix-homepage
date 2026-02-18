@@ -1,43 +1,54 @@
-"use client";
+import Container from '@/components/ui/Container';
 
 const testimonials = [
-  { quote: "Elvatix heeft onze outreach compleet veranderd. We besparen minstens 2 uur per dag per recruiter.", name: "Lisa van den Berg", role: "Head of Recruitment, Vibe Group" },
-  { quote: "De AI-gegenereerde berichten voelen persoonlijker dan wat we ooit handmatig schreven.", name: "Mark de Vries", role: "Senior Recruiter, Manpower" },
-  { quote: "Onze response rate is met 40% gestegen sinds we Elvatix gebruiken. Het is een game-changer.", name: "Sarah Jansen", role: "Talent Acquisition Lead" },
-];
-
-const badges = [
-  { icon: "⭐", label: "Highest Rated" },
-  { icon: "🏆", label: "Best ROI 2025" },
-  { icon: "🚀", label: "Fastest Growing" },
-  { icon: "💚", label: "Most Loved" },
+  {
+    quote: 'Elvatix heeft onze outreach volledig getransformeerd. We sturen nu 10x meer gepersonaliseerde berichten met een hogere response rate.',
+    name: 'Marie de Vries',
+    role: 'Senior Recruiter, TechStaffing NL',
+  },
+  {
+    quote: 'De AI InMail Writer is een game-changer. Elke outreach voelt nu persoonlijk, terwijl we veel minder tijd besteden per kandidaat.',
+    name: 'Thomas Bakker',
+    role: 'Head of Talent, ScaleUp BV',
+  },
+  {
+    quote: 'Vroeger had ik 4 tools nodig. Nu doet Elvatix alles in een platform. Mijn team is productiever dan ooit.',
+    name: 'Lisa Jansen',
+    role: 'Recruitment Lead, Digital Agency',
+  },
 ];
 
 export default function Testimonials() {
   return (
-    <section className="section-padding" style={{ background: "#fff" }}>
-      <div className="section-inner">
-        <h2 style={{ fontSize: "clamp(24px, 4vw, 48px)", fontWeight: 900, fontStyle: "italic", textAlign: "center", marginBottom: 48, color: "#111" }}>
-          Wat onze klanten zeggen
-        </h2>
-        <div className="grid-3" style={{ marginBottom: 48 }}>
+    <section className="py-20 bg-white">
+      <Container>
+        <div className="text-center mb-12">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-linkedin-light text-linkedin text-sm font-semibold mb-4">
+            Testimonials
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            Wat recruiters zeggen
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((t, i) => (
-            <div key={i} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 20, padding: "clamp(20px, 3vw, 32px)" }}>
-              <p style={{ fontSize: 16, color: "#6a9a00", lineHeight: 1.6, marginBottom: 20, fontWeight: 500 }}>&ldquo;{t.quote}&rdquo;</p>
-              <p style={{ fontWeight: 700, fontSize: 15, color: "#111" }}>{t.name}</p>
-              <p style={{ fontSize: 13, color: "#9ca3af" }}>{t.role}</p>
+            <div
+              key={i}
+              className="p-8 rounded-card bg-gray-50 border border-gray-200 hover:shadow-lg transition-shadow relative"
+            >
+              <span className="absolute top-4 left-6 text-5xl text-linkedin/20 font-serif leading-none">&ldquo;</span>
+              <blockquote className="text-gray-700 leading-relaxed mb-6 relative z-10 pt-4">
+                {t.quote}
+              </blockquote>
+              <div className="border-t border-gray-200 pt-4">
+                <p className="font-bold text-gray-900 text-sm">{t.name}</p>
+                <p className="text-gray-500 text-sm">{t.role}</p>
+              </div>
             </div>
           ))}
         </div>
-        <div style={{ display: "flex", justifyContent: "center", gap: "clamp(16px, 3vw, 32px)", flexWrap: "wrap" }}>
-          {badges.map((b, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 20 }}>{b.icon}</span>
-              <span style={{ fontSize: 14, fontWeight: 600, color: "#6b7280" }}>{b.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      </Container>
     </section>
   );
 }
