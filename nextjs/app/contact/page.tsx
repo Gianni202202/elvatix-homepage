@@ -1,42 +1,49 @@
-"use client";
+'use client';
+
+import Container from '@/components/ui/Container';
+import Button from '@/components/ui/Button';
+import Link from 'next/link';
 
 export default function ContactPage() {
   return (
-    <main className="page-top">
-      <section style={{ padding: "80px 24px" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "start" }}>
+    <main className="pt-32 pb-16">
+      <Container>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           <div>
-            <p style={{ fontSize: 13, fontWeight: 600, color: "#8db600", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Contact</p>
-            <h1 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 900, color: "#111", lineHeight: 1.1, marginBottom: 24 }}>Laten we praten</h1>
-            <p style={{ fontSize: 16, color: "#6b7280", lineHeight: 1.7, marginBottom: 40 }}>Heb je een vraag, wil je een demo plannen, of ben je benieuwd of Elvatix bij jouw organisatie past? Laat het ons weten.</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+            <span className="inline-block px-4 py-1.5 rounded-full bg-linkedin-light text-linkedin text-sm font-semibold mb-4">Contact</span>
+            <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">Laten we praten</h1>
+            <p className="text-gray-600 leading-relaxed mb-10">
+              Heb je een vraag, wil je een demo plannen, of ben je benieuwd of Elvatix bij jouw organisatie past? Laat het ons weten.
+            </p>
+            <div className="flex flex-col gap-6">
               <div>
-                <h3 style={{ fontSize: 14, fontWeight: 700, color: "#111", marginBottom: 4 }}>E-mail</h3>
-                <a href="mailto:hello@elvatix.com" style={{ fontSize: 15, color: "#8db600", textDecoration: "none" }}>hello@elvatix.com</a>
+                <h3 className="text-sm font-bold text-gray-900 mb-1">E-mail</h3>
+                <a href="mailto:hello@elvatix.com" className="text-linkedin no-underline hover:text-linkedin-dark transition-colors">hello@elvatix.com</a>
               </div>
               <div>
-                <h3 style={{ fontSize: 14, fontWeight: 700, color: "#111", marginBottom: 4 }}>LinkedIn</h3>
-                <a href="https://linkedin.com/company/elvatix" target="_blank" rel="noopener noreferrer" style={{ fontSize: 15, color: "#8db600", textDecoration: "none" }}>linkedin.com/company/elvatix</a>
+                <h3 className="text-sm font-bold text-gray-900 mb-1">LinkedIn</h3>
+                <a href="https://linkedin.com/company/elvatix" target="_blank" rel="noopener noreferrer" className="text-linkedin no-underline hover:text-linkedin-dark transition-colors">linkedin.com/company/elvatix</a>
               </div>
               <div>
-                <h3 style={{ fontSize: 14, fontWeight: 700, color: "#111", marginBottom: 4 }}>Locatie</h3>
-                <p style={{ fontSize: 15, color: "#6b7280" }}>Nederland</p>
+                <h3 className="text-sm font-bold text-gray-900 mb-1">Locatie</h3>
+                <p className="text-gray-500">Nederland</p>
               </div>
             </div>
           </div>
-          <div style={{ background: "#fff", borderRadius: 20, padding: "40px 32px", border: "1px solid #e5e7eb", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
-            <form onSubmit={(e) => e.preventDefault()} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+
+          <div className="bg-white rounded-card p-8 md:p-10 border border-gray-200 shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
+            <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-4">
               <div>
-                <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Naam</label>
-                <input type="text" placeholder="Je naam" style={{ width: "100%", padding: "12px 16px", borderRadius: 10, border: "1px solid #d1d5db", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Naam</label>
+                <input type="text" placeholder="Je naam" className="w-full px-4 py-3 rounded-xl border border-gray-300 text-base outline-none focus:border-linkedin focus:ring-1 focus:ring-linkedin transition-colors" />
               </div>
               <div>
-                <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>E-mailadres</label>
-                <input type="email" placeholder="naam@bedrijf.nl" style={{ width: "100%", padding: "12px 16px", borderRadius: 10, border: "1px solid #d1d5db", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">E-mailadres</label>
+                <input type="email" placeholder="naam@bedrijf.nl" className="w-full px-4 py-3 rounded-xl border border-gray-300 text-base outline-none focus:border-linkedin focus:ring-1 focus:ring-linkedin transition-colors" />
               </div>
               <div>
-                <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Onderwerp</label>
-                <select style={{ width: "100%", padding: "12px 16px", borderRadius: 10, border: "1px solid #d1d5db", fontSize: 15, outline: "none", boxSizing: "border-box", background: "#fff" }}>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Onderwerp</label>
+                <select className="w-full px-4 py-3 rounded-xl border border-gray-300 text-base outline-none focus:border-linkedin focus:ring-1 focus:ring-linkedin transition-colors bg-white">
                   <option>Algemene vraag</option>
                   <option>Demo aanvragen</option>
                   <option>Pricing informatie</option>
@@ -45,14 +52,14 @@ export default function ContactPage() {
                 </select>
               </div>
               <div>
-                <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Bericht</label>
-                <textarea placeholder="Waar kunnen we je mee helpen?" rows={5} style={{ width: "100%", padding: "12px 16px", borderRadius: 10, border: "1px solid #d1d5db", fontSize: 15, outline: "none", boxSizing: "border-box", resize: "vertical", fontFamily: "inherit" }} />
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Bericht</label>
+                <textarea placeholder="Waar kunnen we je mee helpen?" rows={5} className="w-full px-4 py-3 rounded-xl border border-gray-300 text-base outline-none focus:border-linkedin focus:ring-1 focus:ring-linkedin transition-colors resize-y font-[inherit]" />
               </div>
-              <button type="submit" className="pill-btn pill-btn-primary" style={{ padding: "14px 24px", fontSize: 15, width: "100%", cursor: "pointer", border: "none", marginTop: 8 }}>Verstuur bericht</button>
+              <Button variant="primary" type="submit">Verstuur bericht</Button>
             </form>
           </div>
         </div>
-      </section>
+      </Container>
     </main>
   );
 }
